@@ -1,10 +1,13 @@
+// index.js
 var express = require('express')
 var router = express.Router()
+const { authenticateToken } = require('../middleware/auth.middleware')
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  const resData = { code: 200, message: 'OK', data: {} }
-  res.status(200).json(resData)
+router.get('/', authenticateToken, (req, res, next) => {
+  res
+    .status(200)
+    .json({ code: 200, message: '', data: {} })
 })
 
 module.exports = router

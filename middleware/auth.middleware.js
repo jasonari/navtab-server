@@ -1,22 +1,20 @@
+// auth.middleware.js
 const jwt = require('jsonwebtoken')
 const SECRET_KEY = '1D756D50BE2BD43291839343F1AC441E'
 
 const userList = [{ uid: '001', userName: 'Jason' }]
 
-function register() {
-  const { username, password } = req.body
-  // registe
-}
-
-function login(req, res) {
-  const { username, password } = req.body
+function generateToken(req, res) {
+  const { username } = req.body
   // search
   const user = userList.find((item) => {
     return item.userName == username
   })
   // invalid user
   if (!user) {
-    return res.status(401).send('Invalid User')
+    return res
+      .status(401)
+      .json({ code: 401, message: 'Invalid User', data: {} })
   }
   // token
   const token = jwt.sign({ uid: user.uid }, SECRET_KEY, { expiresIn: '1h' })
@@ -42,4 +40,4 @@ function authenticateToken(req, res, next) {
   })
 }
 
-module.exports = { login, authenticateToken }
+module.exports = { generateToken, authenticateToken }

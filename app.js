@@ -3,10 +3,9 @@ var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
-const { login, authenticateToken } = require('./middleware/index')
 
 var indexRouter = require('./routes/index')
-var usersRouter = require('./routes/users')
+var loginRouter = require('./routes/login')
 
 var app = express()
 
@@ -21,15 +20,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
-
-app.post('/login', login, (req, res) => {
-  res.status(200)
-})
-
-app.get('/testlogin', authenticateToken, (req, res) => {
-  res.status(200).json({ code: 200, message: 'Ok', data: { uid: req.uid } })
-})
+app.use(loginRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
