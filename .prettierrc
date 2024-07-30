@@ -5,7 +5,7 @@
   "singleQuote": true,
   "quoteProps": "as-needed",
   "jsxBracketSameLine": false,
-  "trailingComma": "es5",
+  "trailingComma": "none",
   "bracketSpacing": true,
   "bracketLine": false,
   "arrowParens": "always",
