@@ -1,12 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const { authenticateToken } = require('../middleware/auth.middleware')
 
 /* GET home page. */
-router.get('/', authenticateToken, (req, res, next) => {
+router.get('/', (req, res) => {
   res
     .status(200)
-    .json({ code: 200, message: '', data: {} })
+    .json({ code: 200, message: 'root router default msg', data: {} })
 })
 
 module.exports = router

@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const { generateToken } = require('../middleware/auth.middleware')
 
-router.post('/login', generateToken, (req, res, next) => {
-  res.status(200).json({ code: 200, message: '', data: {} })
+router.post('/login', (req, res) => {
+  res
+    .status(200)
+    .json({ code: 200, message: 'login router default msg', data: {} })
 })
 
 module.exports = router

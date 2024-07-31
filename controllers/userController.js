@@ -3,12 +3,16 @@ const userService = require('../services/userService')
 const userController = {
   createUser: async (req, res) => {
     const { username, password } = req.body
-    const user = { username, password }
     try {
-      const result = await userService.createUser(user)
-      res.status(200).json({ code: 200, message: 'OK', data: { result } })
+      const userId = await userService.createUser({ username, password })
+      res.status(200).json({ code: 200, message: 'OK', data: { userId } })
     } catch (error) {
-      res.status(500).json({ code: 500, message: 'Error:' + error, data: {} })
+      console.error(error)
+      res.status(500).json({
+        code: 500,
+        message: 'Failed to create' + error.message,
+        data: {}
+      })
     }
   }
 }
