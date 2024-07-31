@@ -14,6 +14,19 @@ const userModel = {
       [user.username, user.cryptoPassword]
     )
     return result[0].insertId
+  },
+
+  /**
+   * getUserByUsername
+   * @param {string} username
+   * @returns {object} user
+   */
+  getUserByUsername: async (username) => {
+    const [rows] = await pool.query(
+      'SELECT * FROM user_data WHERE username = ?',
+      [username]
+    )
+    return rows[0]
   }
 }
 
