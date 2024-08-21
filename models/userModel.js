@@ -10,8 +10,8 @@ const userModel = {
    */
   createUser: async (user) => {
     const result = await pool.query(
-      'INSERT INTO user_data (username,password) VALUES (?,?)',
-      [user.username, user.cryptoPassword]
+      'INSERT INTO user_data (uid,username,password) VALUES (?,?,?)',
+      [user.uid, user.username, user.cryptoPassword]
     )
     return result[0].insertId
   },

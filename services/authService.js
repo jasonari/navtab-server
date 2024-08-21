@@ -2,6 +2,7 @@ const crypto = require('crypto')
 const userModel = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const key = process.env.JWT_SECRET_KEY
+const { v4: uuidv4 } = require('uuid')
 
 const authService = {
   /**
@@ -9,15 +10,22 @@ const authService = {
    * @param {object} user
    * @param {string} user.username
    * @param {string} user.password
-   * @returns {number} userId
+   * @returns {number} uid
    */
   registerUser: async (user) => {
+    const uid = uuidv4()
     const username = user.username
     const hash = crypto.createHash('md5')
     const cryptoPassword = hash.update(user.password).digest('hex')
     try {
-      const userId = await userModel.createUser({ username, cryptoPassword })
-      return userId
+      const id = await userModel.createUser({
+        uid,
+        username,
+        cryptoPassword
+      })
+      const user = await userModel.getUserByUsername(username)
+      console.log(user)
+      return user.uid
     } catch (error) {
       throw new Error(error)
     }
@@ -49,8 +57,8 @@ const authService = {
    * @param {string} user.username
    * @returns {string} token
    */
-  generateToken: ({ id, username }) => {
-    return jwt.sign({ id, username }, key, {
+  generateToken: ({ uid, username }) => {
+    return jwt.sign({ uid, username }, key, {
       expiresIn: '1h'
     })
   },
