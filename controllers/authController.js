@@ -20,9 +20,9 @@ const authController = {
   login: async (req, res) => {
     const { username, password } = req.body
     try {
-      const id = await authService.loginUser({ username, password })
-      const token = await authService.generateToken({ id, username })
-      res.status(200).json({ code: 200, message: 'OK', data: { id, token } })
+      const uid = await authService.loginUser({ username, password })
+      const token = await authService.generateToken({ uid, username })
+      res.status(200).json({ code: 200, message: 'OK', data: { token } })
     } catch (error) {
       console.error(error)
       res.status(401).json({

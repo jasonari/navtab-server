@@ -36,7 +36,7 @@ const authService = {
    * @param {object} user
    * @param {string} username
    * @param {string} password
-   * @returns {number} id
+   * @returns {string} uid
    */
   loginUser: async ({ username, password }) => {
     const user = await userModel.getUserByUsername(username)
@@ -47,7 +47,7 @@ const authService = {
     if (cryptoPassword !== user.password) {
       throw new Error('Wrong password')
     }
-    return user.id
+    return user.uid
   },
 
   /**
