@@ -27,6 +27,20 @@ const userModel = {
       [username]
     )
     return rows[0]
+  },
+
+  /**
+   *
+   * @param {String} username
+   * @param {String} bookmarkListStr
+   * @returns
+   */
+  setBookmarkListByUsername: async (username, bookmarkListStr) => {
+    const result = await pool.query(
+      'UPDATE user_data SET bookmark_list = ? WHERE username = ?',
+      [bookmarkListStr, username]
+    )
+    return result[0]
   }
 }
 
