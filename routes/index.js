@@ -10,7 +10,7 @@ router.get('/', authMiddleware, (req, res) => {
     .json({ code: 200, message: 'root router default msg', data: {} })
 })
 
-router.post('/set', userController.setBookmarkList, (req, res) => {
+router.post('/user/setBookmarkList', userController.setBookmarkList, (req, res) => {
   res
     .status(200)
     .json({ code: 200, message: 'root router default msg', data: {} })
