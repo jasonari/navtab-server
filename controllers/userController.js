@@ -3,7 +3,8 @@ const userService = require('../services/userService')
 const userController = {
   setBookmarkList: async (req, res) => {
     try {
-      const { username, bookmarkList } = req.body
+      const { username } = req.tokenPayload
+      const { bookmarkList } = req.body
       const result = await userService.setBookmarkListByUsername(
         username,
         bookmarkList

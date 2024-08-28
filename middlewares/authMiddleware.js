@@ -9,7 +9,8 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    jwt.verify(token, key)
+    req.tokenPayload = jwt.verify(token, key)
+    console.log(req.tokenPayload)
     next()
   } catch (err) {
     res.status(401).json({ code: 401, message: 'Invalid token' })
