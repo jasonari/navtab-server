@@ -41,6 +41,19 @@ const userModel = {
       [bookmarkListStr, username]
     )
     return result[0]
+  },
+
+  /**
+   *
+   * @param {String} username
+   * @returns bookmarkList
+   */
+  getBookmarkListByUsername: async (username) => {
+    const [rows] = await pool.query(
+      'SELECT bookmark_list FROM user_data WHERE username = ?',
+      [username]
+    )
+    return rows[0].bookmark_list
   }
 }
 

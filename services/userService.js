@@ -15,6 +15,16 @@ const userService = {
       bookmarkListStr
     )
     return result
+  },
+
+  /**
+   *
+   * @param {String} username
+   * @returns bookmarkList
+   */
+  getBookmarkListByUsername: async (username) => {
+    const result = await userModel.getBookmarkListByUsername(username)
+    return result
   }
 }
 

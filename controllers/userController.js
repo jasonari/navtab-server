@@ -14,6 +14,17 @@ const userController = {
       console.log(error)
       res.status(500).json({ code: 500, message: error.message, data: {} })
     }
+  },
+
+  getBookmarkList: async (req, res) => {
+    try {
+      const { username } = req.tokenPayload
+      const bookmarkList = await userService.getBookmarkListByUsername(username)
+      res.status(200).json({ code: 200, message: 'ok', data: { bookmarkList } })
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ code: 500, message: error.message, data: {} })
+    }
   }
 }
 
