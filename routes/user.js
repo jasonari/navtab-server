@@ -1,20 +1,21 @@
 const express = require('express')
 const router = express.Router()
-const authMiddleware = require('../middlewares/authMiddleware')
-const userController = require('../controllers/userController')
-const authController = require('../controllers/authController')
 
-/* GET home page. */
-router.get('/', authMiddleware, (req, res) => {
+const authMiddleware = require('../middlewares/authMiddleware')
+
+const authController = require('../controllers/authController')
+const userController = require('../controllers/userController')
+
+router.post('/register', authController.register, (req, res) => {
   console.log('default response')
 })
 
-router.post('/user/register', authController.register, (req, res) => {
+router.post('/login', authController.login, (req, res) => {
   console.log('default response')
 })
 
 router.get(
-  '/user/getBookmarkList',
+  '/getBookmarkList',
   authMiddleware,
   userController.getBookmarkList,
   (req, res) => {
@@ -23,7 +24,7 @@ router.get(
 )
 
 router.post(
-  '/user/setBookmarkList',
+  '/setBookmarkList',
   authMiddleware,
   userController.setBookmarkList,
   (req, res) => {
