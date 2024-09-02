@@ -5,7 +5,9 @@ const authMiddleware = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '')
 
   if (!token) {
-    return res.status(401).json({ code: 401, message: 'Invaild token' })
+    return res
+      .status(401)
+      .json({ code: 401, message: 'Invaild token', data: {} })
   }
 
   try {
@@ -13,7 +15,7 @@ const authMiddleware = (req, res, next) => {
     console.log(req.tokenPayload)
     next()
   } catch (err) {
-    res.status(401).json({ code: 401, message: 'Invalid token' })
+    res.status(401).json({ code: 401, message: 'Invalid token', data: {} })
   }
 }
 
