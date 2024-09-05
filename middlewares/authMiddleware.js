@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const key = process.env.JWT_SECRET_KEY
+const accessKey = process.env.JWT_ACCESS_KEY
 
 const authMiddleware = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '')
@@ -11,7 +11,7 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    req.tokenPayload = jwt.verify(token, key)
+    req.tokenPayload = jwt.verify(token, accessKey)
     console.log(req.tokenPayload)
     next()
   } catch (err) {

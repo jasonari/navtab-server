@@ -1,7 +1,7 @@
 const crypto = require('crypto')
 const userModel = require('../models/userModel')
 const jwt = require('jsonwebtoken')
-const key = process.env.JWT_SECRET_KEY
+const accessKey = process.env.JWT_ACCESS_KEY
 const { v4: uuidv4 } = require('uuid')
 
 const authService = {
@@ -58,14 +58,14 @@ const authService = {
    * @returns {string} token
    */
   generateToken: ({ uid, username }) => {
-    return jwt.sign({ uid, username }, key, {
+    return jwt.sign({ uid, username }, accessKey, {
       expiresIn: '1h'
     })
   },
 
   verifyToken: (token) => {
     try {
-      return jwt.verify(token, key)
+      return jwt.verify(token, accessKey)
     } catch (error) {
       throw new Error('Invalid token')
     }
