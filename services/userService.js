@@ -2,14 +2,13 @@ const userModel = require('../models/userModel')
 
 const userService = {
   /**
-   *
-   * @param {String} username
-   * @param {JSON} bookmarkList
+   * setBookmarkListByUsername
+   * @param {string} username
+   * @param {Array} bookmarkList
    * @returns
    */
   setBookmarkListByUsername: async (username, bookmarkList) => {
     const bookmarkListStr = JSON.stringify(bookmarkList)
-
     const result = await userModel.setBookmarkListByUsername(
       username,
       bookmarkListStr
@@ -18,8 +17,8 @@ const userService = {
   },
 
   /**
-   *
-   * @param {String} username
+   * getBookmarkListByUsername
+   * @param {string} username
    * @returns bookmarkList
    */
   getBookmarkListByUsername: async (username) => {

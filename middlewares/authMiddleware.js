@@ -1,21 +1,23 @@
-const jwt = require('jsonwebtoken')
-const accessKey = process.env.JWT_ACCESS_KEY
+const authService = require('../services/authService')
 
 const authMiddleware = (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '')
+  const accessToken = req.header('Authorization')?.replace('Bearer ', '')
 
-  if (!token) {
+  if (!accessToken) {
     return res
       .status(401)
       .json({ code: 401, message: 'Invaild token', data: {} })
   }
 
   try {
-    req.tokenPayload = jwt.verify(token, accessKey)
-    console.log(req.tokenPayload)
+    const tokenPayload = authService.verifyAccessToken(accessToken)
+    console.log(tokenPayload)
+    req.tokenPayload = tokenPayload
     next()
   } catch (err) {
-    res.status(401).json({ code: 401, message: 'Invalid token', data: {} })
+    res
+      .status(401)
+      .json({ code: 401, message: 'Invalid access-token', data: {} })
   }
 }
 

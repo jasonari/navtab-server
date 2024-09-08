@@ -1,7 +1,8 @@
 const crypto = require('crypto')
 const userModel = require('../models/userModel')
 const jwt = require('jsonwebtoken')
-const accessKey = process.env.JWT_ACCESS_KEY
+const accessKey = process.env.ACCESS_TOKEN_SECRET
+const refreshKey = process.env.REFRESH_TOKEN_SECRET
 const { v4: uuidv4 } = require('uuid')
 
 const authService = {
@@ -10,22 +11,21 @@ const authService = {
    * @param {object} user
    * @param {string} user.username
    * @param {string} user.password
-   * @returns {number} uid
+   * @returns uid
    */
   registerUser: async (user) => {
+    const { username, password } = user
     const uid = uuidv4()
-    const username = user.username
     const hash = crypto.createHash('md5')
-    const cryptoPassword = hash.update(user.password).digest('hex')
+    const cryptoPassword = hash.update(password).digest('hex')
     try {
-      const id = await userModel.createUser({
+      await userModel.createUser({
         uid,
         username,
         cryptoPassword
       })
-      const user = await userModel.getUserByUsername(username)
-      console.log(user)
-      return user.uid
+      const res = await userModel.getUserByUsername(username)
+      return res.uid
     } catch (error) {
       throw new Error(error)
     }
@@ -34,40 +34,72 @@ const authService = {
   /**
    * loginUser
    * @param {object} user
-   * @param {string} username
-   * @param {string} password
-   * @returns {string} uid
+   * @param {string} user.username
+   * @param {string} user.password
+   * @returns uid
    */
-  loginUser: async ({ username, password }) => {
-    const user = await userModel.getUserByUsername(username)
-    console.log(user)
-    if (!user) throw new Error('User not found')
+  loginUser: async (user) => {
+    const { username, password } = user
+    const userData = await userModel.getUserByUsername(username)
+    if (!userData) throw new Error('User not found')
     const hash = crypto.createHash('md5')
     const cryptoPassword = hash.update(password).digest('hex')
-    if (cryptoPassword !== user.password) {
+    if (cryptoPassword !== userData.password) {
       throw new Error('Wrong password')
     }
-    return user.uid
+    return userData.uid
   },
 
   /**
-   * generateToken
+   * generateTokens
    * @param {object} user
-   * @param {number} user.id
+   * @param {number} user.uid
    * @param {string} user.username
-   * @returns {string} token
+   * @returns tokens
    */
-  generateToken: ({ uid, username }) => {
-    return jwt.sign({ uid, username }, accessKey, {
-      expiresIn: '1h'
-    })
+  generateTokens: async (user) => {
+    const { uid, username } = user
+    try {
+      const userData = await userModel.getUserByUsername(username)
+      // user is not banned
+      if (userData.is_banned === 0) {
+        const accessToken = jwt.sign({ uid, username }, accessKey, {
+          expiresIn: '5m'
+        })
+        const refreshToken = jwt.sign({ uid, username }, refreshKey, {
+          expiresIn: '7d'
+        })
+        return { accessToken, refreshToken }
+      }
+      throw new Error('User is Banned')
+    } catch (error) {
+      throw new Error(error.message)
+    }
   },
 
-  verifyToken: (token) => {
+  /**
+   * verifyAccessToken
+   * @param {string} token
+   * @returns tokenPayload
+   */
+  verifyAccessToken: (token) => {
     try {
       return jwt.verify(token, accessKey)
     } catch (error) {
-      throw new Error('Invalid token')
+      throw new Error('Invalid access-token')
+    }
+  },
+
+  /**
+   * verifyRefreshToken
+   * @param {string} token
+   * @returns tokenPayload
+   */
+  verifyRefreshToken: (token) => {
+    try {
+      return jwt.verify(token, refreshKey)
+    } catch (error) {
+      throw new Error('Invalid refresh-token')
     }
   }
 }

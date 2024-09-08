@@ -2,24 +2,25 @@ const pool = require('../config/db')
 
 const userModel = {
   /**
-   * createUser 创建用户
+   * createUser
    * @param {object} user
+   * @param {string} user.uid
    * @param {string} user.username
    * @param {string} user.cryptoPassword
-   * @returns {number} insertId
+   * @returns {Promise<number>} insertId
    */
   createUser: async (user) => {
     const result = await pool.query(
       'INSERT INTO user_data (uid,username,password) VALUES (?,?,?)',
       [user.uid, user.username, user.cryptoPassword]
     )
-    return result[0].insertId
+    return result[0]
   },
 
   /**
    * getUserByUsername
    * @param {string} username
-   * @returns {object} user
+   * @returns {Promise<object>} user
    */
   getUserByUsername: async (username) => {
     const [rows] = await pool.query(
@@ -30,9 +31,9 @@ const userModel = {
   },
 
   /**
-   *
-   * @param {String} username
-   * @param {String} bookmarkListStr
+   * setBookmarkListByUsername
+   * @param {string} username
+   * @param {string} bookmarkListStr
    * @returns
    */
   setBookmarkListByUsername: async (username, bookmarkListStr) => {
@@ -40,13 +41,14 @@ const userModel = {
       'UPDATE user_data SET bookmark_list = ? WHERE username = ?',
       [bookmarkListStr, username]
     )
+    console.log(result)
     return result[0]
   },
 
   /**
-   *
-   * @param {String} username
-   * @returns bookmarkList
+   * getBookmarkListByUsername
+   * @param {string} username
+   * @returns {Promise<Array>} bookmarkList
    */
   getBookmarkListByUsername: async (username) => {
     const [rows] = await pool.query(
