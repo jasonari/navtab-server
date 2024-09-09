@@ -9,10 +9,10 @@ const userController = {
         username,
         bookmarkList
       )
-      res.status(200).json({ code: 200, message: 'ok', data: {} })
+      res.status(201).json({ code: 200, message: 'Created', data: {} })
     } catch (error) {
       console.log(error)
-      res.status(500).json({ code: 500, message: error.message, data: {} })
+      res.status(400).json({ code: 400, message: error.message, data: {} })
     }
   },
 
@@ -20,10 +20,10 @@ const userController = {
     try {
       const { username } = req.tokenPayload
       const bookmarkList = await userService.getBookmarkListByUsername(username)
-      res.status(200).json({ code: 200, message: 'ok', data: { bookmarkList } })
+      res.status(200).json({ code: 200, message: 'OK', data: { bookmarkList } })
     } catch (error) {
       console.log(error)
-      res.status(500).json({ code: 500, message: error.message, data: {} })
+      res.status(400).json({ code: 400, message: error.message, data: {} })
     }
   }
 }

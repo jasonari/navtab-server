@@ -7,11 +7,11 @@ const authController = {
       const uid = await authService.registerUser({ username, password })
       const tokenPayload = { uid, username }
       const tokens = await authService.generateTokens(tokenPayload)
-      res.status(200).json({ code: 200, message: 'OK', data: tokens })
+      res.status(201).json({ code: 200, message: 'Created', data: tokens })
     } catch (error) {
       console.error(error)
-      res.status(500).json({
-        code: 500,
+      res.status(400).json({
+        code: 400,
         message: 'Failed to create: ' + error.message,
         data: {}
       })
@@ -27,8 +27,8 @@ const authController = {
       res.status(200).json({ code: 200, message: 'OK', data: tokens })
     } catch (error) {
       console.error(error)
-      res.status(401).json({
-        code: 401,
+      res.status(400).json({
+        code: 400,
         message: 'Failed to login: ' + error.message,
         data: {}
       })
@@ -43,8 +43,8 @@ const authController = {
       res.status(200).json({ code: 200, message: 'OK', data: tokens })
     } catch (error) {
       console.error(error)
-      res.status(401).json({
-        code: 401,
+      res.status(400).json({
+        code: 400,
         message: 'Failed to refresh token: ' + error.message,
         data: {}
       })
