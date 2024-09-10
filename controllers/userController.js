@@ -9,7 +9,7 @@ const userController = {
         username,
         bookmarkList
       )
-      res.status(201).json({ code: 200, message: 'Created', data: {} })
+      res.status(201).json({ code: 201, message: 'Created', data: {} })
     } catch (error) {
       console.log(error)
       res.status(400).json({ code: 400, message: error.message, data: {} })
