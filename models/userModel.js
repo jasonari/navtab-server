@@ -41,7 +41,6 @@ const userModel = {
       'UPDATE user_data SET bookmark_list = ? WHERE username = ?',
       [bookmarkListStr, username]
     )
-    console.log(result)
     return result[0]
   },
 
