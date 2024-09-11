@@ -27,11 +27,19 @@ const authController = {
       res.status(200).json({ code: 200, message: 'OK', data: tokens })
     } catch (error) {
       console.error(error)
-      res.status(400).json({
-        code: 400,
-        message: 'Failed to login: ' + error.message,
-        data: {}
-      })
+      if (error.message.includes('ECONNREFUSED')) {
+        res.status(500).json({
+          code: 500,
+          message: 'Failed to login: ' + error.message,
+          data: {}
+        })
+      } else {
+        res.status(400).json({
+          code: 400,
+          message: 'Failed to login: ' + error.message,
+          data: {}
+        })
+      }
     }
   },
 
