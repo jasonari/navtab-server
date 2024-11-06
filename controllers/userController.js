@@ -5,6 +5,7 @@ const userController = {
     try {
       const { username } = req.tokenPayload
       const { bookmarkList } = req.body
+      if (!bookmarkList || !username) throw new Error('BookmarkList invalid')
       const result = await userService.setBookmarkListByUsername(
         username,
         bookmarkList
