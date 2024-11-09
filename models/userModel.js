@@ -8,13 +8,19 @@ const userModel = {
    * @param {string} user.uid
    * @param {string} user.username
    * @param {string} user.cryptoPassword
+   * @param {string} user.defaultBookmarkListStr
    * @returns {Promise<number>} insertId
    */
   createUser: async (user) => {
     try {
       const result = await pool.query(
-        'INSERT INTO user_data (uid,username,password) VALUES (?,?,?)',
-        [user.uid, user.username, user.cryptoPassword]
+        'INSERT INTO user_data (uid,username,password,bookmark_list) VALUES (?,?,?,?)',
+        [
+          user.uid,
+          user.username,
+          user.cryptoPassword,
+          user.defaultBookmarkListStr
+        ]
       )
       logger.info(`MySQL createUser: ${user.username}`)
       return result[0]

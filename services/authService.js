@@ -3,6 +3,7 @@ const userModel = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const accessKey = process.env.ACCESS_TOKEN_SECRET
 const refreshKey = process.env.REFRESH_TOKEN_SECRET
+const userInfo = require('../config/userInfo')
 const { v4: uuidv4 } = require('uuid')
 const logger = require('../utils/logger')
 
@@ -19,11 +20,13 @@ const authService = {
     const uid = uuidv4()
     const hash = crypto.createHash('md5')
     const cryptoPassword = hash.update(password).digest('hex')
+    const defaultBookmarkListStr = JSON.stringify(userInfo.defaultBookmarkList)
     try {
       await userModel.createUser({
         uid,
         username,
-        cryptoPassword
+        cryptoPassword,
+        defaultBookmarkListStr
       })
       const res = await userModel.getUserByUsername(username)
       return res.uid
