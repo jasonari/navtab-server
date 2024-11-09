@@ -1,4 +1,5 @@
 const pool = require('../config/db')
+const logger = require('../utils/logger')
 
 const userModel = {
   /**
@@ -10,11 +11,17 @@ const userModel = {
    * @returns {Promise<number>} insertId
    */
   createUser: async (user) => {
-    const result = await pool.query(
-      'INSERT INTO user_data (uid,username,password) VALUES (?,?,?)',
-      [user.uid, user.username, user.cryptoPassword]
-    )
-    return result[0]
+    try {
+      const result = await pool.query(
+        'INSERT INTO user_data (uid,username,password) VALUES (?,?,?)',
+        [user.uid, user.username, user.cryptoPassword]
+      )
+      logger.info(`MySQL createUser: ${user.username}`)
+      return result[0]
+    } catch (error) {
+      logger.debug(`MySQL Error in createUser: ${error.message}`)
+      throw error
+    }
   },
 
   /**
@@ -23,11 +30,17 @@ const userModel = {
    * @returns {Promise<object>} user
    */
   getUserByUsername: async (username) => {
-    const [rows] = await pool.query(
-      'SELECT * FROM user_data WHERE username = ?',
-      [username]
-    )
-    return rows[0]
+    try {
+      const [rows] = await pool.query(
+        'SELECT * FROM user_data WHERE username = ?',
+        [username]
+      )
+      logger.info(`MySQL getUserByUsername: ${username}`)
+      return rows[0]
+    } catch (error) {
+      logger.debug(`MySQL Error in getUserByUsername: ${error.message}`)
+      throw error
+    }
   },
 
   /**
@@ -37,11 +50,17 @@ const userModel = {
    * @returns
    */
   setBookmarkListByUsername: async (username, bookmarkListStr) => {
-    const result = await pool.query(
-      'UPDATE user_data SET bookmark_list = ? WHERE username = ?',
-      [bookmarkListStr, username]
-    )
-    return result[0]
+    try {
+      const result = await pool.query(
+        'UPDATE user_data SET bookmark_list = ? WHERE username = ?',
+        [bookmarkListStr, username]
+      )
+      logger.info(`MySQL setBookmarkListByUsername: ${username}`)
+      return result[0]
+    } catch (error) {
+      logger.debug(`MySQL Error in setBookmarkListByUsername: ${error.message}`)
+      throw error
+    }
   },
 
   /**
@@ -50,11 +69,17 @@ const userModel = {
    * @returns {Promise<Array>} bookmarkList
    */
   getBookmarkListByUsername: async (username) => {
-    const [rows] = await pool.query(
-      'SELECT bookmark_list FROM user_data WHERE username = ?',
-      [username]
-    )
-    return rows[0].bookmark_list
+    try {
+      const [rows] = await pool.query(
+        'SELECT bookmark_list FROM user_data WHERE username = ?',
+        [username]
+      )
+      logger.info(`MySQL getBookmarkListByUsername: ${username}`)
+      return rows[0].bookmark_list
+    } catch (error) {
+      logger.debug(`MySQL Error in getBookmarkListByUsername: ${error.message}`)
+      throw error
+    }
   }
 }
 

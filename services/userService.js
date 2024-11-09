@@ -1,4 +1,5 @@
 const userModel = require('../models/userModel')
+const logger = require('../utils/logger')
 
 const userService = {
   /**
@@ -8,12 +9,19 @@ const userService = {
    * @returns
    */
   setBookmarkListByUsername: async (username, bookmarkList) => {
-    const bookmarkListStr = JSON.stringify(bookmarkList)
-    const result = await userModel.setBookmarkListByUsername(
-      username,
-      bookmarkListStr
-    )
-    return result
+    try {
+      const bookmarkListStr = JSON.stringify(bookmarkList)
+      const result = await userModel.setBookmarkListByUsername(
+        username,
+        bookmarkListStr
+      )
+      return result
+    } catch (error) {
+      logger.debug(
+        `UserService setBookmarkListByUsername Error: ${error.message}`
+      )
+      throw error
+    }
   },
 
   /**
@@ -22,8 +30,15 @@ const userService = {
    * @returns bookmarkList
    */
   getBookmarkListByUsername: async (username) => {
-    const result = await userModel.getBookmarkListByUsername(username)
-    return result
+    try {
+      const result = await userModel.getBookmarkListByUsername(username)
+      return result
+    } catch (error) {
+      logger.debug(
+        `UserService getBookmarkListByUsername Error: ${error.message}`
+      )
+      throw error
+    }
   }
 }
 
