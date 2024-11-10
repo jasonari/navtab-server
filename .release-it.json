@@ -5,7 +5,7 @@
   },
   "github": {
     "release": true,
-    "releaseName":"NavTab v${version}"
+    "releaseName":"NavTab Node Server v${version}"
   },
   "npm": {
     "publish": false
