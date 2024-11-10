@@ -1,6 +1,4 @@
-const dotenv = require('dotenv')
-const env = process.env.NODE_ENV || 'development'
-dotenv.config({ path: `.env.${env}` })
+require('dotenv').config()
 
 var express = require('express')
 var path = require('path')
