@@ -1,7 +1,11 @@
-require('dotenv').config()
+const dotenv = require('dotenv')
+const path = require('path')
+
+const env = process.env.NODE_ENV || 'development'
+const envPath = path.resolve(__dirname, `.env.${env}.local`)
+dotenv.config({ path: envPath })
 
 var express = require('express')
-var path = require('path')
 var cookieParser = require('cookie-parser')
 
 const authRouter = require('./routes/auth')
