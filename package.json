@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "pm2-runtime start ecosystem.config.js --env production",
-    "dev": "nodemon ./bin/www",
+    "dev": "cross-env NODE_ENV=development nodemon ./bin/www",
     "prerelease": "release-it --dry-run --ci",
     "release": "release-it"
   },
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^8.0.1",
+    "cross-env": "^7.0.3",
     "release-it": "^17.6.0"
   }
 }
