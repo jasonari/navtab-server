@@ -1,14 +1,13 @@
 {
   "name": "navtab-server",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
-    "prerelease": "release-it --dry-run --ci",
-    "release": "release-it"
+    "start": "pm2-runtime start ecosystem.config.js --env production",
+    "dev": "cross-env NODE_ENV=development nodemon ./bin/www"
   },
   "dependencies": {
+    "@jason-ari/auto-release": "^1.1.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.4.5",
@@ -23,7 +22,6 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "^8.0.1",
-    "release-it": "^17.6.0"
+    "cross-env": "^7.0.3"
   }
 }
