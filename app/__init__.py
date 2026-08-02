@@ -1,0 +1,2 @@
+"""NavTab FastAPI application."""
+
